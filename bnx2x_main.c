@@ -105,6 +105,10 @@ static int disable_tpa;
 module_param(disable_tpa, int, 0444);
 MODULE_PARM_DESC(disable_tpa, " Disable the TPA (LRO) feature");
 
+static int mask_tx_fault;
+module_param(mask_tx_fault, int, 0444);
+MODULE_PARM_DESC(mask_tx_fault, " Mask SFP TX fault detection");
+
 static int int_mode;
 module_param(int_mode, int, 0444);
 MODULE_PARM_DESC(int_mode, " Force interrupt mode other than MSI-X "
@@ -12454,6 +12458,8 @@ static int bnx2x_init_bp(struct bnx2x *bp)
 
 	if (BP_NOMCP(bp) && (func == 0))
 		dev_err(&bp->pdev->dev, "MCP disabled, must load devices in order!\n");
+
+	bp->mask_tx_fault = mask_tx_fault;
 
 	bp->disable_tpa = disable_tpa;
 	bp->disable_tpa |= !!IS_MF_STORAGE_ONLY(bp);

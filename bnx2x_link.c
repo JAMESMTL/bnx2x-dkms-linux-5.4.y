@@ -13990,7 +13990,8 @@ void bnx2x_period_func(struct link_params *params, struct link_vars *vars)
 		    & PORT_HW_CFG_NET_SERDES_IF_MASK) ==
 		    PORT_HW_CFG_NET_SERDES_IF_SFI) {
 			if (bnx2x_is_sfp_module_plugged(phy, params)) {
-				bnx2x_sfp_tx_fault_detection(phy, params, vars);
+				if(!((params->port + 1) & bp->mask_tx_fault))
+					bnx2x_sfp_tx_fault_detection(phy, params, vars);
 			} else if (vars->link_status &
 				LINK_STATUS_SFP_TX_FAULT) {
 				/* Clean trail, interrupt corrects the leds */
